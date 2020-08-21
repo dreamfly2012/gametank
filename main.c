@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 const int WIDTH = 960;
 const int HEIGHT = 640;
@@ -29,6 +30,39 @@ int main(int argc, char *argv[])
     SDL_SetRenderDrawColor(render, 0, 255, 0 ,255);
     SDL_RenderClear(render);
     SDL_RenderPresent(render);
+
+    //TODO:渲染图片
+    SDL_Surface *image;
+    image = IMG_Load("tank.png");
+    if(!image){
+        printf("Load error:%s\n", SDL_GetError());
+        return 1;
+    }
+
+    SDL_Texture *texture;
+    texture = SDL_CreateTextureFromSurface(render, image);
+
+    SDL_Rect s_rect,d_rect;
+
+    s_rect.x = 0;
+    s_rect.y = 0;
+    s_rect.w = 174/2;
+    s_rect.h = 154/2;
+
+    d_rect.x = 100;
+    d_rect.y = 100;
+    d_rect.w = 174*2;
+    d_rect.h = 154*2;
+
+
+    
+    SDL_RenderCopy(render, texture, &s_rect, &d_rect);
+    SDL_RenderPresent(render);
+
+
+
+
+
 
     while(1){
         SDL_Event event;
