@@ -46,17 +46,18 @@ int main(int argc, char *argv[])
 
     s_rect.x = 0;
     s_rect.y = 0;
-    s_rect.w = 174/2;
-    s_rect.h = 154/2;
+    s_rect.w = 174;
+    s_rect.h = 154;
 
     d_rect.x = 100;
     d_rect.y = 100;
-    d_rect.w = 174*2;
-    d_rect.h = 154*2;
+    d_rect.w = 174/2;
+    d_rect.h = 154/2;
 
 
     
-    SDL_RenderCopy(render, texture, &s_rect, &d_rect);
+    //SDL_RenderCopy(render, texture, &s_rect, &d_rect);
+    SDL_RenderCopyEx(render, texture, &s_rect, &d_rect, 180, NULL, SDL_FLIP_NONE);
     SDL_RenderPresent(render);
 
 
