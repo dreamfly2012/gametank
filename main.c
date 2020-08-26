@@ -18,6 +18,25 @@ typedef struct{
     SDL_Texture *texture;
 }Player;
 
+void createPlayer(Player player, SDL_Renderer *render, SDL_Surface *image)
+{
+    player.texture = SDL_CreateTextureFromSurface(render, image);
+
+    SDL_Rect s_rect, d_rect;
+
+    s_rect.x = 0;
+    s_rect.y = 0;
+    s_rect.w = 174;
+    s_rect.h = 154;
+
+    d_rect.x = player.x;
+    d_rect.y = player.y;
+    d_rect.w = player.width;
+    d_rect.h = player.height;
+
+    SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.direction, NULL, SDL_FLIP_NONE);
+}
+
 int main(int argc, char *argv[])
 {
     SDL_Window *window;
@@ -55,51 +74,21 @@ int main(int argc, char *argv[])
     }
 
     SDL_Texture *texture;
-    
-    Player player;
-    player.x = 200;
-    player.y = 300;
-    player.width = 174/2;
-    player.height = 154 /2;
-    player.direction = LEFT;
-    player.texture = SDL_CreateTextureFromSurface(render, image);
+    Player player1,player2;
+    player1.x = 200;
+    player1.y = 300;
+    player1.width = 174 / 2;
+    player1.height = 154 / 2;
+    player1.direction = LEFT;
 
-    SDL_Rect s_rect,d_rect;
+    player2.x = 100;
+    player2.y = 100;
+    player2.width = 174 / 2;
+    player2.height = 154 / 2;
+    player2.direction = DOWN;
 
-    s_rect.x = 0;
-    s_rect.y = 0;
-    s_rect.w = 174;
-    s_rect.h = 154;
-
-    d_rect.x = player.x;
-    d_rect.y = player.y;
-    d_rect.w = player.width;
-    d_rect.h = player.height;
-
-    // Player player2;
-    // player2.x = 200;
-    // player2.y = 300;
-    // player2.width = 174 / 2;
-    // player2.height = 154 / 2;
-    // player2.direction = RIGHT;
-    // player2.texture = SDL_CreateTextureFromSurface(render, image);
-
-    // SDL_Rect s_rect2, d_rect2;
-
-    // s_rect2.x = 0;
-    // s_rect2.y = 0;
-    // s_rect2.w = 174;
-    // s_rect2.h = 154;
-
-    // d_rect2.x = player2.x;
-    // d_rect2.y = player2.y;
-    // d_rect2.w = player2.width;
-    // d_rect2.h = player2.height;
-
-    // SDL_RenderCopyEx(render, player2.texture, &s_rect, &d_rect, player2.direction, NULL, SDL_FLIP_NONE);
-    // SDL_RenderPresent(render);
-    //SDL_RenderCopy(render, texture, &s_rect, &d_rect);
-    SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.direction, NULL, SDL_FLIP_NONE);
+    createPlayer(player1, render, image);
+    createPlayer(player2, render, image);
     SDL_RenderPresent(render);
 
 
