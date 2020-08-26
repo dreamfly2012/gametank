@@ -5,6 +5,19 @@
 const int WIDTH = 960;
 const int HEIGHT = 640;
 
+const int UP = 0;
+const int RIGHT = 90;
+const int DOWN = 180;
+const int LEFT = 270;
+
+
+typedef struct{
+    float x,y;
+    int width,height;
+    int direction;
+    SDL_Texture *texture;
+}Player;
+
 int main(int argc, char *argv[])
 {
     SDL_Window *window;
@@ -31,6 +44,8 @@ int main(int argc, char *argv[])
     SDL_RenderClear(render);
     SDL_RenderPresent(render);
 
+    
+
     //TODO:渲染图片
     SDL_Surface *image;
     image = IMG_Load("tank.png");
@@ -40,7 +55,14 @@ int main(int argc, char *argv[])
     }
 
     SDL_Texture *texture;
-    texture = SDL_CreateTextureFromSurface(render, image);
+    
+    Player player;
+    player.x = 200;
+    player.y = 300;
+    player.width = 174/2;
+    player.height = 154 /2;
+    player.direction = LEFT;
+    player.texture = SDL_CreateTextureFromSurface(render, image);
 
     SDL_Rect s_rect,d_rect;
 
@@ -49,15 +71,35 @@ int main(int argc, char *argv[])
     s_rect.w = 174;
     s_rect.h = 154;
 
-    d_rect.x = 100;
-    d_rect.y = 100;
-    d_rect.w = 174/2;
-    d_rect.h = 154/2;
+    d_rect.x = player.x;
+    d_rect.y = player.y;
+    d_rect.w = player.width;
+    d_rect.h = player.height;
 
+    // Player player2;
+    // player2.x = 200;
+    // player2.y = 300;
+    // player2.width = 174 / 2;
+    // player2.height = 154 / 2;
+    // player2.direction = RIGHT;
+    // player2.texture = SDL_CreateTextureFromSurface(render, image);
 
-    
+    // SDL_Rect s_rect2, d_rect2;
+
+    // s_rect2.x = 0;
+    // s_rect2.y = 0;
+    // s_rect2.w = 174;
+    // s_rect2.h = 154;
+
+    // d_rect2.x = player2.x;
+    // d_rect2.y = player2.y;
+    // d_rect2.w = player2.width;
+    // d_rect2.h = player2.height;
+
+    // SDL_RenderCopyEx(render, player2.texture, &s_rect, &d_rect, player2.direction, NULL, SDL_FLIP_NONE);
+    // SDL_RenderPresent(render);
     //SDL_RenderCopy(render, texture, &s_rect, &d_rect);
-    SDL_RenderCopyEx(render, texture, &s_rect, &d_rect, 180, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.direction, NULL, SDL_FLIP_NONE);
     SDL_RenderPresent(render);
 
 
