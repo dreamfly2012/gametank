@@ -5,10 +5,10 @@
 const int WIDTH = 960;
 const int HEIGHT = 640;
 
-const int UP = 0;
-const int RIGHT = 90;
-const int DOWN = 180;
-const int LEFT = 270;
+const int UP = 270;
+const int RIGHT = 0;
+const int DOWN = 90;
+const int LEFT = 180;
 
 
 typedef struct{
@@ -18,23 +18,13 @@ typedef struct{
     SDL_Texture *texture;
 }Player;
 
-void createPlayer(Player player, SDL_Renderer *render, SDL_Surface *image)
+void createPlayer(Player player, SDL_Rect s_rect, SDL_Rect d_rect, SDL_Renderer *render, SDL_Surface *image)
 {
     player.texture = SDL_CreateTextureFromSurface(render, image);
 
-    SDL_Rect s_rect, d_rect;
-
-    s_rect.x = 0;
-    s_rect.y = 0;
-    s_rect.w = 174;
-    s_rect.h = 154;
-
-    d_rect.x = player.x;
-    d_rect.y = player.y;
-    d_rect.w = player.width;
-    d_rect.h = player.height;
-
     SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.direction, NULL, SDL_FLIP_NONE);
+
+    SDL_DestroyTexture(player.texture);
 }
 
 int main(int argc, char *argv[])
@@ -67,7 +57,7 @@ int main(int argc, char *argv[])
 
     //TODO:渲染图片
     SDL_Surface *image;
-    image = IMG_Load("tank.png");
+    image = IMG_Load("sprite.webp");
     if(!image){
         printf("Load error:%s\n", SDL_GetError());
         return 1;
@@ -75,27 +65,27 @@ int main(int argc, char *argv[])
 
     SDL_Texture *texture;
     Player player1,player2;
-    player1.x = 200;
-    player1.y = 300;
-    player1.width = 174 / 2;
-    player1.height = 154 / 2;
-    player1.direction = LEFT;
 
-    player2.x = 100;
-    player2.y = 100;
-    player2.width = 174 / 2;
-    player2.height = 154 / 2;
-    player2.direction = DOWN;
+    SDL_Rect s_rect, d_rect;
 
-    createPlayer(player1, render, image);
-    createPlayer(player2, render, image);
-    SDL_RenderPresent(render);
+    player1.x = 0;
+    player1.y = 0;
+    player1.width = 256;
+    player1.height = 256;
+    player1.direction = RIGHT;
 
+    s_rect.x = 256;
+    s_rect.y = 0;
+    s_rect.w = 256;
+    s_rect.h = 256;
 
+    d_rect.x = player1.x;
+    d_rect.y = player1.y;
+    d_rect.w = player1.width;
+    d_rect.h = player1.height;
 
-
-
-
+ 
+    unsigned int lastTime = 0, currentTime;
     while(1){
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -114,8 +104,19 @@ int main(int argc, char *argv[])
                 break;
             }
         }
+        currentTime = SDL_GetTicks();
+
+        printf("sdl time %i\r\n", currentTime / 1000);
+
+       
+        s_rect.x = 256 * (currentTime*10 / 1000 % 6);
         
 
+           
+        SDL_RenderClear(render);
+        createPlayer(player1, s_rect, d_rect, render, image);
+
+        SDL_RenderPresent(render);
     }
 
 
