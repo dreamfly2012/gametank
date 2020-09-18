@@ -15,6 +15,7 @@ typedef struct{
     float x,y;
     int width,height;
     int direction;
+    int angle;
     SDL_Texture *texture;
 }Player;
 
@@ -22,7 +23,7 @@ void createPlayer(Player player, SDL_Rect s_rect, SDL_Rect d_rect, SDL_Renderer 
 {
     player.texture = SDL_CreateTextureFromSurface(render, image);
 
-    SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.direction, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.angle, NULL, player.direction);
 
     SDL_DestroyTexture(player.texture);
 }
@@ -72,7 +73,8 @@ int main(int argc, char *argv[])
     player1.y = 0;
     player1.width = 256;
     player1.height = 256;
-    player1.direction = RIGHT;
+    player1.direction = SDL_FLIP_NONE;
+    player1.angle = 0;
 
     s_rect.x = 256;
     s_rect.y = 0;
@@ -81,8 +83,8 @@ int main(int argc, char *argv[])
 
     d_rect.x = player1.x;
     d_rect.y = player1.y;
-    d_rect.w = player1.width;
-    d_rect.h = player1.height;
+    d_rect.w = player1.width/4;
+    d_rect.h = player1.height/4;
 
  
     unsigned int lastTime = 0, currentTime;
@@ -97,16 +99,30 @@ int main(int argc, char *argv[])
                 SDL_Quit();
                 break;
             case SDL_KEYDOWN:
-             printf("key is pressed");
-             SDL_Quit();
-             break;
+                if (event.key.keysym.sym == SDLK_RIGHT){
+                    if (d_rect.x < WIDTH - player1.width/4){
+                        d_rect.x += 10;
+                        player1.direction = SDL_FLIP_NONE;
+                    }
+                }
+                if (event.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (d_rect.x > 0)
+                    {
+                        d_rect.x -= 10;
+                        player1.direction = SDL_FLIP_HORIZONTAL;
+                    }
+                }
+
+                //SDL_Quit();
+                break;
             default:
                 break;
             }
         }
         currentTime = SDL_GetTicks();
 
-        printf("sdl time %i\r\n", currentTime / 1000);
+        //printf("sdl time %i\r\n", currentTime / 1000);
 
        
         s_rect.x = 256 * (currentTime*10 / 1000 % 6);
