@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <tmx.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -86,7 +88,13 @@ int main(int argc, char *argv[])
     d_rect.w = player1.width/4;
     d_rect.h = player1.height/4;
 
- 
+    tmx_map *map = tmx_load("desert.tmx");
+    if (map == NULL)
+    {
+        tmx_perror("Cannot load map");
+        return 1;
+    }
+
     unsigned int lastTime = 0, currentTime;
     while(1){
         SDL_Event event;
