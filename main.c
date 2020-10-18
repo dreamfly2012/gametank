@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "index.h"
 
 const int WIDTH = 960;
 const int HEIGHT = 640;
@@ -45,16 +46,15 @@ int main(int argc, char *argv[])
        return 1;
     }
 
-    if(!(render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE))){
+    if (!(ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)))
+    {
         printf("渲染器创建失败");
         return 1;
     }
 
-    
-
-    SDL_SetRenderDrawColor(render, 0, 255, 0 ,255);
-    SDL_RenderClear(render);
-    SDL_RenderPresent(render);
+    // SDL_SetRenderDrawColor(render, 0, 255, 0 ,255);
+    // SDL_RenderClear(render);
+    // SDL_RenderPresent(render);
 
     
 
@@ -87,6 +87,9 @@ int main(int argc, char *argv[])
     d_rect.y = player1.y;
     d_rect.w = player1.width/4;
     d_rect.h = player1.height/4;
+
+    tmx_img_load_func = SDL_tex_loader;
+    tmx_img_free_func = (void (*)(void *))SDL_DestroyTexture;
 
     tmx_map *map = tmx_load("desert.tmx");
     if (map == NULL)
@@ -137,10 +140,13 @@ int main(int argc, char *argv[])
         
 
            
-        SDL_RenderClear(render);
-        createPlayer(player1, s_rect, d_rect, render, image);
+        // SDL_RenderClear(render);
+        // createPlayer(player1, s_rect, d_rect, render, image);
 
-        SDL_RenderPresent(render);
+        // SDL_RenderPresent(render);
+
+        render_map(map);
+        SDL_RenderPresent(ren);
     }
 
 
