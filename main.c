@@ -5,8 +5,11 @@
 #include <SDL2/SDL_image.h>
 #include "index.h"
 
-const int WIDTH = 960;
-const int HEIGHT = 640;
+const int WIDTH = 600;
+const int HEIGHT = 600;
+
+const int TANK_WIDTH = 40;
+const int TANK_HEIGHT = 40;
 
 const int UP = 270;
 const int RIGHT = 0;
@@ -24,6 +27,7 @@ typedef struct{
 
 void createPlayer(Player player, SDL_Rect s_rect, SDL_Rect d_rect, SDL_Renderer *render, SDL_Surface *image)
 {
+    SDL_RenderClear(render);
     player.texture = SDL_CreateTextureFromSurface(render, image);
 
     SDL_RenderCopyEx(render, player.texture, &s_rect, &d_rect, player.angle, NULL, player.direction);
@@ -60,7 +64,7 @@ int main(int argc, char *argv[])
 
     //TODO:渲染图片
     SDL_Surface *image;
-    image = IMG_Load("sprite.webp");
+    image = IMG_Load("tanks.png");
     if(!image){
         printf("Load error:%s\n", SDL_GetError());
         return 1;
@@ -73,31 +77,34 @@ int main(int argc, char *argv[])
 
     player1.x = 0;
     player1.y = 0;
-    player1.width = 256;
-    player1.height = 256;
+    player1.width = TANK_WIDTH;
+    player1.height = TANK_HEIGHT;
     player1.direction = SDL_FLIP_NONE;
     player1.angle = 0;
 
-    s_rect.x = 256;
+    //原矩形
+    s_rect.x = 0;
     s_rect.y = 0;
-    s_rect.w = 256;
-    s_rect.h = 256;
+    s_rect.w = TANK_WIDTH;
+    s_rect.h = TANK_WIDTH;
 
+    //目标矩形
     d_rect.x = player1.x;
     d_rect.y = player1.y;
-    d_rect.w = player1.width/4;
-    d_rect.h = player1.height/4;
+    d_rect.w = player1.width;
+    d_rect.h = player1.height;
 
     tmx_img_load_func = SDL_tex_loader;
     tmx_img_free_func = (void (*)(void *))SDL_DestroyTexture;
 
-    tmx_map *map = tmx_load("desert.tmx");
+    tmx_map *map = tmx_load("tank.tmx");
     if (map == NULL)
     {
         tmx_perror("Cannot load map");
         return 1;
     }
 
+    SDL_TimerID timer_id;
     unsigned int lastTime = 0, currentTime;
     while(1){
         SDL_Event event;
@@ -110,10 +117,11 @@ int main(int argc, char *argv[])
                 SDL_Quit();
                 break;
             case SDL_KEYDOWN:
+                
                 if (event.key.keysym.sym == SDLK_RIGHT){
-                    if (d_rect.x < WIDTH - player1.width/4){
+                    if (d_rect.x < WIDTH - player1.width){
                         d_rect.x += 10;
-                        player1.direction = SDL_FLIP_NONE;
+                        player1.angle = 90;
                     }
                 }
                 if (event.key.keysym.sym == SDLK_LEFT)
@@ -121,7 +129,26 @@ int main(int argc, char *argv[])
                     if (d_rect.x > 0)
                     {
                         d_rect.x -= 10;
-                        player1.direction = SDL_FLIP_HORIZONTAL;
+                        player1.angle = 270;
+                        
+                    }
+                }
+
+                if (event.key.keysym.sym == SDLK_UP)
+                {
+                    if (d_rect.y > 0)
+                    {
+                        d_rect.y -= 10;
+                        player1.angle = 0;
+                    }
+                }
+
+                if (event.key.keysym.sym == SDLK_DOWN)
+                {
+                    if (d_rect.y < HEIGHT - player1.height)
+                    {
+                        d_rect.y += 10;
+                        player1.angle = 180;
                     }
                 }
 
@@ -136,16 +163,26 @@ int main(int argc, char *argv[])
         //printf("sdl time %i\r\n", currentTime / 1000);
 
        
-        s_rect.x = 256 * (currentTime*10 / 1000 % 6);
+
         
 
-           
-        // SDL_RenderClear(render);
-        // createPlayer(player1, s_rect, d_rect, render, image);
+        createPlayer(player1, s_rect, d_rect, ren, image);
+        //SDL_RenderPresent(ren);
 
-        // SDL_RenderPresent(render);
+
+        //map添加精灵
+        //map->ly_head->content->
 
         render_map(map);
+
+        //s_rect.x = 256 * (currentTime * 10 / 1000 % 6);
+
+
+
+        
+        
+        
+
         SDL_RenderPresent(ren);
     }
 

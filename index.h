@@ -154,8 +154,9 @@ void draw_all_layers(tmx_map *map, tmx_layer *layers)
 void render_map(tmx_map *map)
 {
     set_color(map->backgroundcolor);
-    SDL_RenderClear(ren);
+    //
     draw_all_layers(map, map->ly_head);
+    //
 }
 
 Uint32 timer_func(Uint32 interval, void *param)
