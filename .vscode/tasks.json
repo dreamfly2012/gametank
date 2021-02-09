@@ -28,6 +28,7 @@
             "label": "build c",
             "command": "D:\\MinGW\\bin\\gcc.exe",
             "args": [
+                "-fexec-charset=GBK",
                 "-g",
                 "${file}",
                 "-o",

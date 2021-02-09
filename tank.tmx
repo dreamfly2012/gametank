@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2020.08.05" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="40" tileheight="40" infinite="0" nextlayerid="13" nextobjectid="90">
+<map version="1.4" tiledversion="2020.08.05" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="40" tileheight="40" infinite="0" nextlayerid="13" nextobjectid="91">
  <tileset firstgid="1" name="tanks" tilewidth="40" tileheight="40" tilecount="90" columns="10">
   <image source="tanks.png" width="400" height="380"/>
  </tileset>
@@ -26,8 +26,8 @@
  </objectgroup>
  <objectgroup id="5" name="brick">
   <object id="52" x="696" y="-3"/>
-  <object id="53" x="209" y="250" width="308" height="26"/>
-  <object id="54" x="374" y="255" width="5" height="5"/>
+  <object id="53" x="199.197" y="238.797" width="319.203" height="40.7042"/>
+  <object id="54" x="201.051" y="279.507" width="37.2091" height="40.0099"/>
   <object id="55" x="80" y="120" width="40" height="400"/>
   <object id="56" x="40" y="400" width="40" height="200"/>
   <object id="57" x="120" y="360" height="200"/>
@@ -45,7 +45,8 @@
   <object id="69" x="120" y="200" width="120" height="40"/>
   <object id="70" x="0" y="240" width="80" height="40"/>
   <object id="77" x="240" y="520" width="120" height="40"/>
-  <object id="78" x="240" y="560" width="40" height="40"/>
+  <object id="78" x="240.7" y="560" width="39.2998" height="40"/>
   <object id="79" x="320" y="560" width="40" height="40"/>
+  <object id="90" x="482.037" y="281.08" width="76.4202" height="40.0099"/>
  </objectgroup>
 </map>
