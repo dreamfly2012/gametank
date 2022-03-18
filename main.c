@@ -122,14 +122,6 @@ int checkCollision(Player player, tmx_map* map, int dicrection)
                     }
                     head = head->next;
                 }
-              
-                
-
-                
-                            
-                        
-                    
-                
             }
         }
         layer = layer->next;
